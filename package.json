@@ -1,0 +1,17 @@
+{
+  "name": "generator-simple-ts",
+  "version": "0.1.0",
+  "description": "A Yeoman Generator for a simple Typescript project structure",
+  "main": "generators/app/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "Dom Parfitt",
+  "license": "MIT",
+  "dependencies": {
+    "yeoman-generator": "^3.2.0"
+  }
+}
