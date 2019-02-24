@@ -1,5 +1,6 @@
 const Generator = require('yeoman-generator');
 const GitGenerator = require('generator-git-init/generators/app/index.js');
+const questions = require('./questions');
 
 module.exports = class extends Generator {
 
@@ -8,10 +9,14 @@ module.exports = class extends Generator {
         this.answers = await this.prompt(questions);
         this.destinationRoot(this.contextRoot)
         this.destinationRoot(this.answers.name);
-        this.composeWith({
-            Generator: GitGenerator,
-            path: require.resolve('generator-git-init/generators/app')
-        });
+
+        // this.composeWith(require.resolve('generator-license'), {
+        //     name: this.answers.author,
+        //     email: this.answers.email,
+        //     website: "",
+        //     license: this.answers.license,
+        //     output: this.destinationRoot(),
+        // });
     }
 
     configuring() {
@@ -48,6 +53,7 @@ module.exports = class extends Generator {
 
     writing() {
         this.fs.write("src/index.ts", "");
+        this.spawnCommand("git", ["init"]);
     }
 
     installing() {
@@ -63,46 +69,3 @@ module.exports = class extends Generator {
         ], { "save-dev": true });
     }
 };
-
-const questions = [
-    {
-        type: "input",
-        name: "name",
-        message: "Your project name"
-    },
-    {
-        type: "input",
-        name: "version",
-        message: "Project version",
-        default: "0.1.0"
-    },
-    {
-        type: "input",
-        name: "description",
-        message: "A description of your project"
-    },
-    {
-        type: "input",
-        name: "author",
-        message: "Project author",
-        store: true,
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "Author's email",
-        store: true,
-    },
-    {
-        type: "input",
-        name: "license",
-        message: "License type",
-        default: "MIT"
-    },
-    {
-        type: "input",
-        name: "repo",
-        message: "Github repository",
-        store: true,
-    },
-];
