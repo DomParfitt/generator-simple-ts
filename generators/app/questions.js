@@ -1,11 +1,6 @@
 const questions = [
     {
         type: "input",
-        name: "name",
-        message: "Your project name"
-    },
-    {
-        type: "input",
         name: "version",
         message: "Project version",
         default: "0.1.0"
@@ -13,7 +8,7 @@ const questions = [
     {
         type: "input",
         name: "description",
-        message: "A description of your project"
+        message: "A description of your project",
     },
     {
         type: "input",
