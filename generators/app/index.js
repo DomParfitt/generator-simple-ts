@@ -1,11 +1,17 @@
-var Generator = require('yeoman-generator');
+const Generator = require('yeoman-generator');
+const GitGenerator = require('generator-git-init/generators/app/index.js');
 
 module.exports = class extends Generator {
 
-    async prompting() {
+    async initializing() {
         this.log("Generating Typescript project...");
         this.answers = await this.prompt(questions);
+        this.destinationRoot(this.contextRoot)
         this.destinationRoot(this.answers.name);
+        this.composeWith({
+            Generator: GitGenerator,
+            path: require.resolve('generator-git-init/generators/app')
+        });
     }
 
     configuring() {
@@ -13,6 +19,15 @@ module.exports = class extends Generator {
             this.templatePath('package.json'),
             this.destinationPath('package.json'),
             this.answers
+        );
+
+        this.fs.copyTpl(
+            this.templatePath('README.md'),
+            this.destinationPath('README.md'),
+            {
+                name: this.answers.name,
+                description: this.answers.description
+            }
         );
 
         this.fs.copy(
@@ -23,6 +38,11 @@ module.exports = class extends Generator {
         this.fs.copy(
             this.templatePath('tslint.json'),
             this.destinationPath('tslint.json')
+        );
+
+        this.fs.copy(
+            this.templatePath('.gitignore'),
+            this.destinationPath('.gitignore')
         );
     }
 
