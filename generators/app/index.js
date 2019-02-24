@@ -1,34 +1,33 @@
 const Generator = require('yeoman-generator');
-const GitGenerator = require('generator-git-init/generators/app/index.js');
 const questions = require('./questions');
 
 module.exports = class extends Generator {
 
     async initializing() {
-        this.log("Generating Typescript project...");
-        this.answers = await this.prompt(questions);
-        this.destinationRoot(this.contextRoot)
-        this.destinationRoot(this.answers.name);
+        this.answers = await this.prompt(
+            {
+                type: "input",
+                name: "name",
+                message: "Your project name",
+            },
+        );
+    }
 
-        // this.composeWith(require.resolve('generator-license'), {
-        //     name: this.answers.author,
-        //     email: this.answers.email,
-        //     website: "",
-        //     license: this.answers.license,
-        //     output: this.destinationRoot(),
-        // });
+    async prompting() {
+        const answers = await this.prompt(questions);
+        this.answers = { ...this.answers, ...answers };
     }
 
     configuring() {
         this.fs.copyTpl(
             this.templatePath('package.json'),
-            this.destinationPath('package.json'),
+            this.destinationPath(`${this.answers.name}/package.json`),
             this.answers
         );
 
         this.fs.copyTpl(
             this.templatePath('README.md'),
-            this.destinationPath('README.md'),
+            this.destinationPath(`${this.answers.name}/README.md`),
             {
                 name: this.answers.name,
                 description: this.answers.description
@@ -37,23 +36,29 @@ module.exports = class extends Generator {
 
         this.fs.copy(
             this.templatePath('tsconfig.json'),
-            this.destinationPath('tsconfig.json')
+            this.destinationPath(`${this.answers.name}/tsconfig.json`)
         );
 
         this.fs.copy(
             this.templatePath('tslint.json'),
-            this.destinationPath('tslint.json')
+            this.destinationPath(`${this.answers.name}/tslint.json`)
         );
 
         this.fs.copy(
             this.templatePath('.gitignore'),
-            this.destinationPath('.gitignore')
+            this.destinationPath(`${this.answers.name}/.gitignore`)
         );
     }
 
     writing() {
-        this.fs.write("src/index.ts", "");
-        this.spawnCommand("git", ["init"]);
+        this.fs.write(`${this.answers.name}/src/index.ts`, "");
+        this.composeWith(require.resolve('generator-license'), {
+            name: this.answers.author,
+            email: this.answers.email,
+            website: "",
+            license: this.answers.license,
+            output: `${this.answers.name}/LICENSE`
+        });
     }
 
     installing() {
@@ -66,6 +71,9 @@ module.exports = class extends Generator {
             "jest",
             "@types/node",
             "@types/jest"
-        ], { "save-dev": true });
+        ], { "save-dev": true }, { cwd: this.answers.name });
+        this.spawnCommandSync("git", ["init"], {
+            cwd: this.answers.name
+        });
     }
 };
