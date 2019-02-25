@@ -67,7 +67,7 @@ Whether to initialise a git repository in the project root.
 
 ***8. Github user***
 
-The Github username to use in generating the repository URL. Only prompts when the option to initialise a git repository was selected. Generates a URL in the form:
+The Github username to use in generating the repository URL. Only prompts when the option to initialise a git repository was selected. Generates a URL in the form in the `package.json`:
 ```
 https://github.com/<github-user>/<project-name>.git
 ```
