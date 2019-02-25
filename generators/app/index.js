@@ -4,36 +4,28 @@ const questions = require('./questions');
 module.exports = class extends Generator {
 
     async prompting() {
-        this.answers = await this.prompt(
-            {
-                type: "input",
-                name: "name",
-                message: "Your project name",
-            },
-        );
-        let answers = await this.prompt(questions);
-        this.answers = { ...this.answers, ...answers };
 
+        // Ask standard questions
+        await this._askQuestions(questions);
+
+        // Optional github details if required
         if (this.answers.github) {
-            answers = await this.prompt(
-                {
-                    type: "input",
-                    name: "ghuser",
-                    message: "Github repository",
-                    transformer: (input) => {
-                        if (!input) {
-                            let user = this.config.get("promptValues").ghuser;
-                            if (!user) {
-                                user = `<github-user>`;
-                            }
-                            return `https://github.com/${user}/${this.answers.name}.git`;
+            await this._askQuestions({
+                type: "input",
+                name: "ghuser",
+                message: "Github repository",
+                transformer: (input) => {
+                    if (!input) {
+                        let user = this.config.get("promptValues").ghuser;
+                        if (!user) {
+                            user = `<github-user>`;
                         }
-                        return `https://github.com/${input}/${this.answers.name}.git`;
-                    },
-                    store: true,
-                }
-            );
-            this.answers = { ...this.answers, ...answers };
+                        return `https://github.com/${user}/${this.answers.name}.git`;
+                    }
+                    return `https://github.com/${input}/${this.answers.name}.git`;
+                },
+                store: true,
+            });
         }
     }
 
@@ -86,6 +78,16 @@ module.exports = class extends Generator {
             this.spawnCommandSync("git", ["init"], {
                 cwd: this.answers.name
             });
+        }
+    }
+
+
+    async _askQuestions(questions) {
+        const answers = await this.prompt(questions);
+        if (!this.answers) {
+            this.answers = answers;
+        } else {
+            this.answers = { ...this.answers, ...answers };
         }
     }
 

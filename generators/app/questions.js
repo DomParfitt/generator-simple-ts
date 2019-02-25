@@ -3,6 +3,11 @@ const licenses = require('generator-license').licenses;
 const questions = [
     {
         type: "input",
+        name: "name",
+        message: "Your project name",
+    },
+    {
+        type: "input",
         name: "version",
         message: "Project version",
         default: "0.1.0"
