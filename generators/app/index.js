@@ -4,16 +4,14 @@ const questions = require('./questions');
 module.exports = class extends Generator {
 
     async prompting() {
-
         // Ask standard questions
         await this._askQuestions(questions);
 
-        // Optional github details if required
+        // Optional github details if required - relies on answers from standard questions
         await this._askQuestions(questions.optional(this));
     }
 
     writing() {
-
         // Copy templates
         this._copyTemplate('package.json', this.answers);
         this._copyTemplate('README.md',
@@ -55,12 +53,11 @@ module.exports = class extends Generator {
             "@types/node",
             "@types/jest"
         ], { "save-dev": true }, { cwd: this.answers.name });
+    }
 
+    end() {
         if (this.answers.github) {
-            // This doesn't work atm
-            this.spawnCommandSync("git", ["init"], {
-                cwd: this.answers.name
-            });
+            this.spawnCommandSync("git", ["init"], { cwd: this.answers.name });
         }
     }
 
