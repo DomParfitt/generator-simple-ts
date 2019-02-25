@@ -9,23 +9,7 @@ module.exports = class extends Generator {
         await this._askQuestions(questions);
 
         // Optional github details if required
-        await this._askQuestions({
-            type: "input",
-            name: "ghuser",
-            message: "Github repository",
-            transformer: (input) => {
-                if (!input) {
-                    let user = this.config.get("promptValues").ghuser;
-                    if (!user) {
-                        user = `<github-user>`;
-                    }
-                    return `https://github.com/${user}/${this.answers.name}.git`;
-                }
-                return `https://github.com/${input}/${this.answers.name}.git`;
-            },
-            store: true,
-            when: this.answers.github
-        });
+        await this._askQuestions(questions.optional(this));
     }
 
     writing() {

@@ -43,4 +43,27 @@ const questions = [
     },
 ];
 
+function optional(thisArg) {
+    return [
+        {
+            type: "input",
+            name: "ghuser",
+            message: "Github repository",
+            transformer: (input) => {
+                if (!input) {
+                    let user = thisArg.config.get("promptValues").ghuser;
+                    if (!user) {
+                        user = `<github-user>`;
+                    }
+                    return `https://github.com/${user}/${thisArg.answers.name}.git`;
+                }
+                return `https://github.com/${input}/${thisArg.answers.name}.git`;
+            },
+            store: true,
+            when: thisArg.answers.github
+        }
+    ]
+}
+
 module.exports = questions;
+module.exports.optional = optional;
