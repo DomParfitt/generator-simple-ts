@@ -32,10 +32,9 @@ const questions = [
         default: "MIT"
     },
     {
-        type: "input",
-        name: "repo",
-        message: "Github repository",
-        store: true,
+        type: "confirm",
+        name: "github",
+        message: "Initialise github repo"
     },
 ];
 

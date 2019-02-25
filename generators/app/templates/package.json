@@ -20,10 +20,12 @@
         "name": "<%= author %>",
         "email": "<%= email %>"
     },
-    "repository": {
-        "type": "git",
-        "url": "<%= repo %>"
-    },
+    <% if(github) { %>
+        "repository": {
+            "type": "git",
+            "url": "https://github.com/<%= ghuser %>/<%= name %>.git"
+        },
+    <% } %>
     "license": "<%= license %>",
     "dependencies": {},
     "devDependencies": {},

@@ -11,8 +11,30 @@ module.exports = class extends Generator {
                 message: "Your project name",
             },
         );
-        const answers = await this.prompt(questions);
+        let answers = await this.prompt(questions);
         this.answers = { ...this.answers, ...answers };
+
+        if (this.answers.github) {
+            answers = await this.prompt(
+                {
+                    type: "input",
+                    name: "ghuser",
+                    message: "Github repository",
+                    transformer: (input) => {
+                        if (!input) {
+                            let user = this.config.get("promptValues").ghuser;
+                            if (!user) {
+                                user = `<github-user>`;
+                            }
+                            return `https://github.com/${user}/${this.answers.name}.git`;
+                        }
+                        return `https://github.com/${input}/${this.answers.name}.git`;
+                    },
+                    store: true,
+                }
+            );
+            this.answers = { ...this.answers, ...answers };
+        }
     }
 
     writing() {
@@ -59,10 +81,12 @@ module.exports = class extends Generator {
             "@types/jest"
         ], { "save-dev": true }, { cwd: this.answers.name });
 
-        // This doesn't work atm
-        this.spawnCommandSync("git", ["init"], {
-            cwd: this.answers.name
-        });
+        if (this.answers.github) {
+            // This doesn't work atm
+            this.spawnCommandSync("git", ["init"], {
+                cwd: this.answers.name
+            });
+        }
     }
 
     _copyTemplate(fileName, opts = {}) {
