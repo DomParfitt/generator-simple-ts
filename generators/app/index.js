@@ -28,6 +28,12 @@ module.exports = class extends Generator {
         this._copyTemplate('tsconfig.json');
         this._copyTemplate('tslint.json');
         this._copyTemplate('.gitignore');
+        this._copyTemplate('CHANGELOG.md',
+            {
+                version: this.answers.version,
+                date: new Date().toISOString().slice(0, 10),
+            }
+        );
 
         // Write index file
         this.fs.write(`${this.answers.name}/src/index.ts`, "");
