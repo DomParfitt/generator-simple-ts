@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 - Made git initialisation optional
 
+### Fixed
+- Bug stopping git init running correctly
+
 ## 0.1.0 - 2019-02-25
 ### Added
 - Initial release.
