@@ -3,7 +3,7 @@ const questions = require('./questions');
 
 module.exports = class extends Generator {
 
-    async initializing() {
+    async prompting() {
         this.answers = await this.prompt(
             {
                 type: "input",
@@ -11,47 +11,28 @@ module.exports = class extends Generator {
                 message: "Your project name",
             },
         );
-    }
-
-    async prompting() {
         const answers = await this.prompt(questions);
         this.answers = { ...this.answers, ...answers };
     }
 
-    configuring() {
-        this.fs.copyTpl(
-            this.templatePath('package.json'),
-            this.destinationPath(`${this.answers.name}/package.json`),
-            this.answers
-        );
+    writing() {
 
-        this.fs.copyTpl(
-            this.templatePath('README.md'),
-            this.destinationPath(`${this.answers.name}/README.md`),
+        // Copy templates
+        this._copyTemplate('package.json', this.answers);
+        this._copyTemplate('README.md',
             {
                 name: this.answers.name,
                 description: this.answers.description
             }
         );
+        this._copyTemplate('tsconfig.json');
+        this._copyTemplate('tslint.json');
+        this._copyTemplate('.gitignore');
 
-        this.fs.copy(
-            this.templatePath('tsconfig.json'),
-            this.destinationPath(`${this.answers.name}/tsconfig.json`)
-        );
-
-        this.fs.copy(
-            this.templatePath('tslint.json'),
-            this.destinationPath(`${this.answers.name}/tslint.json`)
-        );
-
-        this.fs.copy(
-            this.templatePath('.gitignore'),
-            this.destinationPath(`${this.answers.name}/.gitignore`)
-        );
-    }
-
-    writing() {
+        // Write index file
         this.fs.write(`${this.answers.name}/src/index.ts`, "");
+
+        // Generate license
         this.composeWith(require.resolve('generator-license'), {
             name: this.answers.author,
             email: this.answers.email,
@@ -62,7 +43,6 @@ module.exports = class extends Generator {
     }
 
     installing() {
-        this.log("Installing dev dependencies");
         this.npmInstall([
             "typescript",
             "tslint",
@@ -72,8 +52,18 @@ module.exports = class extends Generator {
             "@types/node",
             "@types/jest"
         ], { "save-dev": true }, { cwd: this.answers.name });
+
+        // This doesn't work atm
         this.spawnCommandSync("git", ["init"], {
             cwd: this.answers.name
         });
+    }
+
+    _copyTemplate(fileName, opts = {}) {
+        this.fs.copyTpl(
+            this.templatePath(fileName),
+            this.destinationPath(`${this.answers.name}/${fileName}`),
+            opts
+        );
     }
 };
