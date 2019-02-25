@@ -1,3 +1,5 @@
+const licenses = require('generator-license').licenses;
+
 const questions = [
     {
         type: "input",
@@ -23,9 +25,10 @@ const questions = [
         store: true,
     },
     {
-        type: "input",
+        type: "list",
         name: "license",
         message: "License type",
+        choices: licenses,
         default: "MIT"
     },
     {
