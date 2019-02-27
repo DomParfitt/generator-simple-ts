@@ -1,16 +1,24 @@
 const licenses = require('generator-license').licenses;
 
+const gitProviders = [
+    { name: "Github", value: "https://github.com" },
+    { name: "Gitlab", value: "https://gitlab.com" },
+    { name: "Bitbucket", value: "https://bitbucket.org" },
+];
+
 const questions = [
     {
         type: "input",
         name: "name",
         message: "Your project name",
+        validate: (input, answers, opts) => new RegExp('^[a-zA-Z0-9\-_]+$').test(input),
     },
     {
         type: "input",
         name: "version",
         message: "Project version",
-        default: "0.1.0"
+        default: "0.1.0",
+        validate: (input, answers, opts) => new RegExp('^[0-9]+\.[0-9]+\.[0-9]+$').test(input),
     },
     {
         type: "input",
@@ -38,32 +46,35 @@ const questions = [
     },
     {
         type: "confirm",
-        name: "github",
-        message: "Initialise github repo"
+        name: "git",
+        message: "Initialise git repo"
+    },
+    {
+        type: "list",
+        name: "repo_type",
+        message: "Git repository type",
+        choices: gitProviders,
+        default: gitProviders[0],
+        store: true,
+        when: (answers) => answers.git
+    },
+    {
+        type: "input",
+        name: "repo_user",
+        message: "Git repository user",
+        transformer: (input, answers) => {
+            // if (!input) {
+            //     let user = thisArg.config.get("promptValues").ghuser;
+            //     if (!user) {
+            //         user = `<git-repo-user>`;
+            //     }
+            //     return `${answers.repo_type}/${user}/${answers.name}.git`;
+            // }
+            return `${input} (${answers.repo_type}/${input}/${answers.name}.git)`;
+        },
+        store: true,
+        when: (answers) => answers.git,
     },
 ];
 
-function optional(thisArg) {
-    return [
-        {
-            type: "input",
-            name: "ghuser",
-            message: "Github repository",
-            transformer: (input) => {
-                if (!input) {
-                    let user = thisArg.config.get("promptValues").ghuser;
-                    if (!user) {
-                        user = `<github-user>`;
-                    }
-                    return `https://github.com/${user}/${thisArg.answers.name}.git`;
-                }
-                return `https://github.com/${input}/${thisArg.answers.name}.git`;
-            },
-            store: true,
-            when: thisArg.answers.github
-        }
-    ]
-}
-
 module.exports = questions;
-module.exports.optional = optional;
