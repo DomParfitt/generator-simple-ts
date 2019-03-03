@@ -5,7 +5,7 @@ module.exports = class extends Generator {
 
     async prompting() {
         // Ask standard questions
-        await this._askQuestions(questions);
+        await this._askQuestions(questions(this.config));
     }
 
     writing() {
