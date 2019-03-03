@@ -5,10 +5,7 @@ module.exports = class extends Generator {
 
     async prompting() {
         // Ask standard questions
-        await this._askQuestions(questions);
-
-        // Optional github details if required - relies on answers from standard questions
-        await this._askQuestions(questions.optional(this));
+        await this._askQuestions(questions(this.config));
     }
 
     writing() {
@@ -56,7 +53,7 @@ module.exports = class extends Generator {
     }
 
     end() {
-        if (this.answers.github) {
+        if (this.answers.git) {
             this.spawnCommandSync("git", ["init"], { cwd: this.answers.name });
         }
     }

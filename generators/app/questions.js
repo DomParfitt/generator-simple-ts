@@ -1,69 +1,83 @@
 const licenses = require('generator-license').licenses;
 
-const questions = [
-    {
-        type: "input",
-        name: "name",
-        message: "Your project name",
-    },
-    {
-        type: "input",
-        name: "version",
-        message: "Project version",
-        default: "0.1.0"
-    },
-    {
-        type: "input",
-        name: "description",
-        message: "A description of your project",
-    },
-    {
-        type: "input",
-        name: "author",
-        message: "Project author",
-        store: true,
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "Author's email",
-        store: true,
-    },
-    {
-        type: "list",
-        name: "license",
-        message: "License type",
-        choices: licenses,
-        default: "MIT"
-    },
-    {
-        type: "confirm",
-        name: "github",
-        message: "Initialise github repo"
-    },
+const gitProviders = [
+    { name: "Github", value: "https://github.com" },
+    { name: "Gitlab", value: "https://gitlab.com" },
+    { name: "Bitbucket", value: "https://bitbucket.org" },
 ];
 
-function optional(thisArg) {
+function questions(config) {
+
     return [
         {
             type: "input",
-            name: "ghuser",
-            message: "Github repository",
-            transformer: (input) => {
+            name: "name",
+            message: "Your project name",
+            validate: (input, answers, opts) => new RegExp('^[a-zA-Z0-9\-_]+$').test(input),
+        },
+        {
+            type: "input",
+            name: "version",
+            message: "Project version",
+            default: "0.1.0",
+            validate: (input, answers, opts) => new RegExp('^[0-9]+\.[0-9]+\.[0-9]+$').test(input),
+        },
+        {
+            type: "input",
+            name: "description",
+            message: "A description of your project",
+        },
+        {
+            type: "input",
+            name: "author",
+            message: "Project author",
+            store: true,
+        },
+        {
+            type: "input",
+            name: "email",
+            message: "Author's email",
+            store: true,
+        },
+        {
+            type: "list",
+            name: "license",
+            message: "License type",
+            choices: licenses,
+            default: "MIT"
+        },
+        {
+            type: "confirm",
+            name: "git",
+            message: "Initialise git repo"
+        },
+        {
+            type: "list",
+            name: "repo_type",
+            message: "Git repository type",
+            choices: gitProviders,
+            default: gitProviders[0],
+            store: true,
+            when: (answers) => answers.git
+        },
+        {
+            type: "input",
+            name: "repo_user",
+            message: "Git repository user",
+            transformer: (input, answers) => {
                 if (!input) {
-                    let user = thisArg.config.get("promptValues").ghuser;
-                    if (!user) {
-                        user = `<github-user>`;
+                    let user = `<git-repo-user>`;
+                    if (config.get("promptValues")) {
+                        user = config.get("promptValues").repo_user;
                     }
-                    return `https://github.com/${user}/${thisArg.answers.name}.git`;
+                    return `${answers.repo_type}/${user}/${answers.name}.git`;
                 }
-                return `https://github.com/${input}/${thisArg.answers.name}.git`;
+                return `${input} (${answers.repo_type}/${input}/${answers.name}.git)`;
             },
             store: true,
-            when: thisArg.answers.github
-        }
-    ]
+            when: (answers) => answers.git,
+        },
+    ];
 }
 
 module.exports = questions;
-module.exports.optional = optional;
