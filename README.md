@@ -61,13 +61,17 @@ The author's email address.
 
 The type of license to use for the project. Offers a list of options.
 
-**7. Github**
+**7. Git**
 
 Whether to initialise a git repository in the project root.
 
-***8. Github user***
+***8. Git provider***
 
-The Github username to use in generating the repository URL. Only prompts when the option to initialise a git repository was selected. Generates a URL in the form in the `package.json`:
+The Git provider for the remote repo. Currently supports: Github, Gitlab and Bitbucket.
+
+***9. Git user***
+
+The Git username to use in generating the repository URL. Only prompts when the option to initialise a git repository was selected. Generates a URL in the form in the `package.json`:
 ```
 https://github.com/<github-user>/<project-name>.git
 ```
