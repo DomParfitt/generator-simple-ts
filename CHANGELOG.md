@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Updated
 - Removed incorrect keywords from package.json template
 
+### Added
+- Unit tests
+
 ## [0.3.0] - 2019-03-03
 ### Added
 - Support for other git providers.
