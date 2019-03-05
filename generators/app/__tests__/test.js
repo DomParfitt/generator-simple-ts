@@ -2,32 +2,35 @@ var path = require('path');
 var helpers = require('yeoman-test');
 var assert = require('yeoman-assert');
 
-describe('simple-ts', () => {
+const prompts = {
+    name: 'foo',
+    version: '0.1.0',
+    description: 'test',
+    author: 'me',
+    email: 'me@example.com',
+    license: 'MIT',
+    git: true,
+    repo_type: 'Github',
+    repo_user: 'MyGit'
+};
 
-    const prompts = {
-        name: 'foo',
-        version: '0.1.0',
-        description: 'test',
-        author: 'me',
-        email: 'me@example.com',
-        license: 'MIT',
-        git: true,
-        repo_type: 'Github',
-        repo_user: 'MyGit'
-    };
+describe('simple-ts', () => {
 
     test('generates a project structure with git', () => {
         return helpers.run(path.join(__dirname, '..'))
             .withPrompts(prompts)
             .toPromise()
             .then((val) => {
-                assert.file(`${prompts.name}/package.json`);
-                assert.file(`${prompts.name}/.gitignore`);
-                assert.file(`${prompts.name}/CHANGELOG.md`);
-                assert.file(`${prompts.name}/README.md`);
-                assert.file(`${prompts.name}/tsconfig.json`);
-                assert.file(`${prompts.name}/tslint.json`);
-                assert.file(`${prompts.name}/src/index.ts`);
+                assertFilesExist([
+                    'package.json',
+                    '.git/',
+                    '.gitignore',
+                    'CHANGELOG.md',
+                    'README.md',
+                    'tsconfig.json',
+                    'tslint.json',
+                    'src/index.ts'
+                ]);
             });
     });
 
@@ -37,15 +40,30 @@ describe('simple-ts', () => {
             .withPrompts(prompts)
             .toPromise()
             .then((val) => {
-                assert.file(`${prompts.name}/package.json`);
-                assert.file(`${prompts.name}/CHANGELOG.md`);
-                assert.file(`${prompts.name}/README.md`);
-                assert.file(`${prompts.name}/tsconfig.json`);
-                assert.file(`${prompts.name}/tslint.json`);
-                assert.file(`${prompts.name}/src/index.ts`);
+                assertFilesExist([
+                    'package.json',
 
-                assert.noFile(`${prompts.name}/.gitignore`);
+                    'CHANGELOG.md',
+                    'README.md',
+                    'tsconfig.json',
+                    'tslint.json',
+                    'src/index.ts'
+                ]);
+
+                assertFilesDontExist([
+                    '.git/',
+                    '.gitignore',
+                ]);
+
             });
     });
 
 });
+
+function assertFilesExist(filenames) {
+    filenames.forEach((filename) => assert.file(`${prompts.name}/${filename}`));
+}
+
+function assertFilesDontExist(filenames) {
+    filenames.forEach((filename) => assert.noFile(`${prompts.name}/${filename}`));
+}
