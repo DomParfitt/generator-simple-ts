@@ -4,28 +4,20 @@ const questions = require('./questions');
 module.exports = class extends Generator {
 
     async prompting() {
-        // Ask standard questions
         await this._askQuestions(questions(this.config));
     }
 
     writing() {
         // Copy templates
-        this._copyTemplate('package.json', this.answers);
-        this._copyTemplate('README.md',
-            {
-                name: this.answers.name,
-                description: this.answers.description
-            }
-        );
+        this._copyTemplate('package.json');
+        this._copyTemplate('README.md');
         this._copyTemplate('tsconfig.json');
         this._copyTemplate('tslint.json');
-        this._copyTemplate('.gitignore');
-        this._copyTemplate('CHANGELOG.md',
-            {
-                version: this.answers.version,
-                date: new Date().toISOString().slice(0, 10),
-            }
-        );
+        this._copyTemplate('CHANGELOG.md', { date: new Date().toISOString().slice(0, 10) });
+
+        if (this.answers.git) {
+            this._copyTemplate('gitignore', {}, '.gitignore');
+        }
 
         // Write index file
         this.fs.write(`${this.answers.name}/src/index.ts`, "");
@@ -58,7 +50,6 @@ module.exports = class extends Generator {
         }
     }
 
-
     async _askQuestions(questions) {
         const answers = await this.prompt(questions);
         if (!this.answers) {
@@ -68,10 +59,18 @@ module.exports = class extends Generator {
         }
     }
 
-    _copyTemplate(fileName, opts = {}) {
+    /**
+     * Copies the template given by fileName from the template directory to the source. By default
+     * uses this.answers to populate any template values.
+     * @param {string} fileName the template to copy
+     * @param {object} opts values to populate into the template, for overriding those provided by this.answers or providing non-prompted values
+     * @param {string} targetFileName optional name for the target if it needs to be different
+     */
+    _copyTemplate(fileName, opts = {}, targetFileName = fileName) {
+        opts = { ...this.answers, ...opts }
         this.fs.copyTpl(
             this.templatePath(fileName),
-            this.destinationPath(`${this.answers.name}/${fileName}`),
+            this.destinationPath(`${this.answers.name}/${targetFileName}`),
             opts
         );
     }
