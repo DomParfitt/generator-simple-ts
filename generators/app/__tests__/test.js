@@ -75,10 +75,6 @@ function checkPackageJson(withGit) {
         "name": prompts.name,
         "version": prompts.version,
         "description": prompts.description,
-        "keywords": [
-            "aws",
-            "key-rotation"
-        ],
         "main": "lib/index.js",
         "types": "lib/index.d.ts",
         "scripts": {
