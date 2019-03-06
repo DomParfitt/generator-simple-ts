@@ -32,7 +32,7 @@ describe('simple-ts', () => {
                     'src/index.ts'
                 ]);
 
-                assert.jsonFileContent(`${prompts.name}/package.json`, packageJson(true));
+                checkPackageJson(true);
             });
     });
 
@@ -56,8 +56,7 @@ describe('simple-ts', () => {
                     '.gitignore',
                 ]);
 
-                assert.jsonFileContent(`${prompts.name}/package.json`, packageJson(false));
-
+                checkPackageJson(false);
             });
     });
 
@@ -71,7 +70,7 @@ function assertFilesDontExist(filenames) {
     filenames.forEach((filename) => assert.noFile(`${prompts.name}/${filename}`));
 }
 
-function packageJson(git) {
+function checkPackageJson(withGit) {
     var json = {
         "name": prompts.name,
         "version": prompts.version,
@@ -130,12 +129,13 @@ function packageJson(git) {
         }
     };
 
-    if (git) {
+    if (withGit) {
         json.repository = {
             "type": "git",
             "url": `${prompts.repo_type}/${prompts.repo_user}/${prompts.name}.git`
         };
     }
 
-    return json;
+    assert.jsonFileContent(`${prompts.name}/package.json`, json);
+
 }
