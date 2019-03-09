@@ -11,6 +11,10 @@
   ],
   "author": "Dom Parfitt",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DomParfitt/generator-simple-ts.git"
+  },
   "dependencies": {
     "generator-license": "^5.4.0",
     "yeoman-generator": "^3.2.0"
