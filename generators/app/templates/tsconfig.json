@@ -11,12 +11,8 @@
         "outDir": "./lib",
         "declaration": true,
         "sourceMap": true,
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "strictNullChecks": true,
-        "noImplicitReturns": true,
+        "strict": true,
         "preserveConstEnums": true,
-        "suppressImplicitAnyIndexErrors": true,
         "forceConsistentCasingInFileNames": true,
     },
     "exclude": [

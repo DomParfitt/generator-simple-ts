@@ -5,9 +5,9 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "lint": "tslint -c tslint.json 'src/**/*.ts'",
+        "lint": "eslint . --ext .ts --max-warnings=0",
         "clean": "rm -rf lib",
-        "build": "npm run lint && tsc",
+        "build": "tsc",
         "clean-build": "npm run clean && npm run build",
         "test": "jest --coverage",
         "prepublishOnly": "npm run clean-build"
@@ -25,35 +25,4 @@
     "license": "<%= license %>",
     "dependencies": {},
     "devDependencies": {},
-    "jest": {
-        "roots": [
-            "<rootDir>/src"
-        ],
-        "transform": {
-            "^.+\\.tsx?$": "ts-jest"
-        },
-        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-        "moduleFileExtensions": [
-            "ts",
-            "tsx",
-            "js",
-            "jsx",
-            "json",
-            "node"
-        ],
-        "coverageDirectory": "test-results/jest/",
-        "collectCoverage": true,
-        "collectCoverageFrom": [
-            "**/src/**"
-        ],
-        "reporters": [
-            "default",
-            "jest-junit"
-        ]
-    },
-    "jest-junit": {
-        "outputDirectory": "test-results/jest",
-        "outputName": "./js-test-results.xml",
-        "usePathForSuiteName": "true"
-    }
 }
