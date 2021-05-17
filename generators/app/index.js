@@ -3,6 +3,11 @@ const questions = require('./questions');
 
 module.exports = class extends Generator {
 
+  constructor(args, opts) {
+    super(args, opts)
+    this.destinationRoot(this.contextRoot)
+  }
+
   async prompting() {
     await this._askQuestions(questions(this.config));
   }
@@ -15,7 +20,8 @@ module.exports = class extends Generator {
     this._copyTemplate('package.json');
     this._copyTemplate('README.md');
     this._copyTemplate('tsconfig.json');
-    this._copyTemplate('tslint.json');
+    this._copyTemplate('.eslintrc.json');
+    this._copyTemplate('.prettierrc.json');
     this._copyTemplate('CHANGELOG.md', { date: new Date().toISOString().slice(0, 10) });
     this._copyTemplate('global-overrides.d.ts');
 
@@ -24,13 +30,13 @@ module.exports = class extends Generator {
     }
 
     // Write index file
-    this.fs.write(`${name}/src/index.ts`, "");
+    this.fs.write(`${name}/src/index.ts`, '');
 
     // Generate license
     this.composeWith(require.resolve('generator-license'), {
       name: author,
       email,
-      website: "",
+      website: '',
       license: license,
       output: `${name}/LICENSE`
     });
@@ -40,21 +46,30 @@ module.exports = class extends Generator {
     const { name } = this.answers;
 
     this.npmInstall([
-      "typescript",
-      "tslint",
-      "ts-jest",
-      "jest-junit",
-      "jest",
-      "@types/node",
-      "@types/jest"
-    ], { "save-dev": true }, { cwd: name });
+      '@types/node',
+      '@types/jest',
+      '@typescript-eslint/eslint-plugin',
+      '@typescript-eslint/parser',
+      'eslint',
+      'eslint-config-airbnb-typescript',
+      'eslint-config-prettier',
+      'eslint-plugin-import',
+      'eslint-plugin-only-warn',
+      'eslint-plugin-prettier',
+      'jest',
+      'jest-junit',
+      'prettier',
+      'ts-jest',
+      'tslint',
+      'typescript',
+    ], { 'save-dev': true }, { cwd: name });
   }
 
   end() {
     const { git, name } = this.answers;
 
     if (git) {
-      this.spawnCommandSync("git", ["init"], { cwd: name });
+      this.spawnCommandSync('git', ['init'], { cwd: name });
     }
   }
 
