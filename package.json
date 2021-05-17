@@ -1,6 +1,6 @@
 {
   "name": "generator-simple-ts",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A Yeoman Generator for a simple Typescript project structure",
   "main": "generators/app/index.js",
   "scripts": {
