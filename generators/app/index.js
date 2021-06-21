@@ -24,6 +24,7 @@ module.exports = class extends Generator {
     this._copyTemplate('.prettierrc.json');
     this._copyTemplate('CHANGELOG.md', { date: new Date().toISOString().slice(0, 10) });
     this._copyTemplate('global-overrides.d.ts');
+    this._copyTemplate('jest.config.js');
 
     if (git) {
       this._copyTemplate('gitignore', {}, '.gitignore');
@@ -60,7 +61,6 @@ module.exports = class extends Generator {
       'jest-junit',
       'prettier',
       'ts-jest',
-      'tslint',
       'typescript',
     ], { 'save-dev': true }, { cwd: name });
   }
