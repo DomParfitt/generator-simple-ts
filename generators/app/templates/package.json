@@ -1,28 +1,28 @@
 {
-    "name": "<%= name %>",
-    "version": "<%= version %>",
-    "description": "<%= description %>",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
-    "scripts": {
-        "lint": "eslint . --ext .ts --max-warnings=0",
-        "clean": "rm -rf lib",
-        "build": "tsc",
-        "clean-build": "npm run clean && npm run build",
-        "test": "jest --coverage",
-        "prepublishOnly": "npm run clean-build"
-    },
-    "author": {
-        "name": "<%= author %>",
-        "email": "<%= email %>"
-    },
-    <% if(git) { %>
-        "repository": {
-            "type": "git",
-            "url": "<%= repo_type %>/<%= repo_user %>/<%= name %>.git"
-        },
-    <% } %>
-    "license": "<%= license %>",
-    "dependencies": {},
-    "devDependencies": {},
+  "name": "<%= name %>",
+  "version": "<%= version %>",
+  "description": "<%= description %>",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build:clean": "npm run clean && npm run build",
+    "clean": "rm -rf lib",
+    "lint": "eslint . --ext .ts --max-warnings=0",
+    "test": "jest --coverage",
+    "prepublishOnly": "npm run clean-build"
+  },
+  "author": {
+      "name": "<%= author %>",
+      "email": "<%= email %>"
+  },
+  <% if(git) { %>
+      "repository": {
+          "type": "git",
+          "url": "<%= repo_type %>/<%= repo_user %>/<%= name %>.git"
+      },
+  <% } %>
+  "license": "<%= license %>",
+  "dependencies": {},
+  "devDependencies": {}
 }
