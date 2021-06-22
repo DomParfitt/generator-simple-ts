@@ -8,9 +8,10 @@
     "build": "tsc",
     "build:clean": "npm run clean && npm run build",
     "clean": "rm -rf lib",
+    "format": "prettier --write .",
     "lint": "eslint . --ext .ts --max-warnings=0",
-    "test": "jest --coverage",
-    "prepublishOnly": "npm run clean-build"
+    "prepublishOnly": "npm run build:clean",
+    "test": "jest --coverage"
   },
   "author": {
       "name": "<%= author %>",
