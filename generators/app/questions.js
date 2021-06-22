@@ -12,14 +12,14 @@ function questions(config) {
       type: 'input',
       name: 'name',
       message: 'Your project name',
-      validate: (input, answers, opts) => new RegExp('^[a-zA-Z0-9-_]+$').test(input),
+      validate: (input, answers, opts) => /^[a-zA-Z0-9-_]+$/.test(input),
     },
     {
       type: 'input',
       name: 'version',
       message: 'Project version',
       default: '0.1.0',
-      validate: (input, answers, opts) => new RegExp('^[0-9]+.[0-9]+.[0-9]+$').test(input),
+      validate: (input, answers, opts) => /^[0-9]+.[0-9]+.[0-9]+$'/.test(input),
     },
     {
       type: 'input',
