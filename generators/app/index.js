@@ -18,7 +18,9 @@ module.exports = class extends Generator {
     this._copyTemplate('package.json');
     this._copyTemplate('README.md');
     this._copyTemplate('tsconfig.json');
+    this._copyTemplate('.eslintignore');
     this._copyTemplate('.eslintrc.json');
+    this._copyTemplate('.prettierignore');
     this._copyTemplate('.prettierrc.json');
     this._copyTemplate('CHANGELOG.md', { date: new Date().toISOString().slice(0, 10) });
     this._copyTemplate('global-overrides.d.ts');
