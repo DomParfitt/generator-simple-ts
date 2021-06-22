@@ -22,14 +22,17 @@ describe('simple-ts', () => {
             .toPromise()
             .then((val) => {
                 assertFilesExist([
-                    'package.json',
-                    '.git/',
-                    '.gitignore',
-                    'CHANGELOG.md',
-                    'README.md',
-                    'tsconfig.json',
-                    'tslint.json',
-                    'src/index.ts'
+                  '.eslintignore',
+                  '.eslintrc.json',
+                  '.git/',
+                  '.gitignore',
+                  '.prettierignore',
+                  '.prettierrc.json',
+                  'CHANGELOG.md',
+                  'package.json',
+                  'README.md',
+                  'src/index.ts',
+                  'tsconfig.json',
                 ]);
 
                 checkPackageJson(true);
@@ -43,12 +46,15 @@ describe('simple-ts', () => {
             .toPromise()
             .then((val) => {
                 assertFilesExist([
-                    'package.json',
-                    'CHANGELOG.md',
-                    'README.md',
-                    'tsconfig.json',
-                    'tslint.json',
-                    'src/index.ts'
+                  '.eslintignore',
+                  '.eslintrc.json',
+                  '.prettierignore',
+                  '.prettierrc.json',
+                  'CHANGELOG.md',
+                  'package.json',
+                  'README.md',
+                  'src/index.ts',
+                  'tsconfig.json',
                 ]);
 
                 assertFilesDontExist([
@@ -72,57 +78,26 @@ function assertFilesDontExist(filenames) {
 
 function checkPackageJson(withGit) {
     var json = {
-        "name": prompts.name,
-        "version": prompts.version,
-        "description": prompts.description,
-        "main": "lib/index.js",
-        "types": "lib/index.d.ts",
-        "scripts": {
-            "lint": "tslint -c tslint.json 'src/**/*.ts'",
-            "clean": "rm -rf lib",
-            "build": "npm run lint && tsc",
-            "clean-build": "npm run clean && npm run build",
-            "test": "jest --coverage",
-            "prepublishOnly": "npm run clean-build"
-        },
-        "author": {
-            "name": prompts.author,
-            "email": prompts.email
-        },
-        "license": prompts.license,
-        "dependencies": {},
-        "devDependencies": {},
-        "jest": {
-            "roots": [
-                "<rootDir>/src"
-            ],
-            "transform": {
-                "^.+\\.tsx?$": "ts-jest"
-            },
-            "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-            "moduleFileExtensions": [
-                "ts",
-                "tsx",
-                "js",
-                "jsx",
-                "json",
-                "node"
-            ],
-            "coverageDirectory": "test-results/jest/",
-            "collectCoverage": true,
-            "collectCoverageFrom": [
-                "**/src/**"
-            ],
-            "reporters": [
-                "default",
-                "jest-junit"
-            ]
-        },
-        "jest-junit": {
-            "outputDirectory": "test-results/jest",
-            "outputName": "./js-test-results.xml",
-            "usePathForSuiteName": "true"
-        }
+      name: prompts.name,
+      version: prompts.version,
+      description: prompts.description,
+      main: 'build/index.js',
+      types: 'build/index.d.ts',
+      scripts: {
+        lint: "eslint . --ext .ts --max-warnings=0",
+        clean: 'rm -rf build',
+        build: 'tsc',
+        'build:clean': 'npm run clean && npm run build',
+        test: 'jest --coverage',
+        prepublishOnly: 'npm run build:clean',
+      },
+      author: {
+        name: prompts.author,
+        email: prompts.email,
+      },
+      license: prompts.license,
+      dependencies: {},
+      devDependencies: {},
     };
 
     if (withGit) {
