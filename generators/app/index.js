@@ -2,10 +2,9 @@ const Generator = require('yeoman-generator');
 const questions = require('./questions');
 
 module.exports = class extends Generator {
-
   constructor(args, opts) {
-    super(args, opts)
-    this.destinationRoot(this.contextRoot)
+    super(args, opts);
+    this.destinationRoot(this.contextRoot);
   }
 
   async prompting() {
@@ -13,7 +12,6 @@ module.exports = class extends Generator {
   }
 
   writing() {
-
     const { name, git, author, email, license } = this.answers;
 
     // Copy templates
@@ -39,30 +37,34 @@ module.exports = class extends Generator {
       email,
       website: '',
       license: license,
-      output: `${name}/LICENSE`
+      output: `${name}/LICENSE`,
     });
   }
 
   installing() {
     const { name } = this.answers;
 
-    this.npmInstall([
-      '@types/node',
-      '@types/jest',
-      '@typescript-eslint/eslint-plugin',
-      '@typescript-eslint/parser',
-      'eslint',
-      'eslint-config-airbnb-typescript',
-      'eslint-config-prettier',
-      'eslint-plugin-import',
-      'eslint-plugin-only-warn',
-      'eslint-plugin-prettier',
-      'jest',
-      'jest-junit',
-      'prettier',
-      'ts-jest',
-      'typescript',
-    ], { 'save-dev': true }, { cwd: name });
+    this.npmInstall(
+      [
+        '@types/node',
+        '@types/jest',
+        '@typescript-eslint/eslint-plugin',
+        '@typescript-eslint/parser',
+        'eslint',
+        'eslint-config-airbnb-typescript',
+        'eslint-config-prettier',
+        'eslint-plugin-import',
+        'eslint-plugin-only-warn',
+        'eslint-plugin-prettier',
+        'jest',
+        'jest-junit',
+        'prettier',
+        'ts-jest',
+        'typescript',
+      ],
+      { 'save-dev': true },
+      { cwd: name },
+    );
   }
 
   end() {
@@ -91,11 +93,7 @@ module.exports = class extends Generator {
    */
   _copyTemplate(fileName, opts = {}, targetFileName = fileName) {
     const { name } = this.answers;
-    opts = { ...this.answers, ...opts }
-    this.fs.copyTpl(
-      this.templatePath(fileName),
-      this.destinationPath(`${name}/${targetFileName}`),
-      opts
-    );
+    opts = { ...this.answers, ...opts };
+    this.fs.copyTpl(this.templatePath(fileName), this.destinationPath(`${name}/${targetFileName}`), opts);
   }
 };
