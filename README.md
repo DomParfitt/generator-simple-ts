@@ -1,20 +1,25 @@
 # generator-simple-ts
 A Yeoman Generator for creating a simple Typescript project structure.
 
-Generates a Typescript project structure corresponding to the below diagram.
+Generates a Typescript project with the following structure:
 
 ```
 +-- <project-name>/
-|   +-- src/
-|   |   +-- index.ts
-|   +-- package.json
-|   +-- tsconfig.json
-|   +-- tslint.json
-|   +-- LICENSE
-|   +-- README.md
-|   +-- CHANGELOG.md
+|   +-- .eslintignore
+|   +-- .eslintrc.json
 |   +-- [.git/]
 |   +-- [.gitignore]
+|   +-- .prettierignore
+|   +-- .prettierrc.json
+|   +-- CHANGELOG.md
+|   +-- global-overrides.d.ts
+|   +-- LICENSE
+|   +-- jest.config.js
+|   +-- package.json
+|   +-- README.md
+|   +-- src/
+|   |   +-- index.ts
+|   +-- tsconfig.json
 ```
 
 # Usage
