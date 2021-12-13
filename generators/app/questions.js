@@ -19,7 +19,7 @@ function questions(config) {
       name: 'version',
       message: 'Project version',
       default: '0.1.0',
-      validate: (input, answers, opts) => /^[0-9]+.[0-9]+.[0-9]+$'/.test(input),
+      validate: (input, answers, opts) => /^[0-9]+.[0-9]+.[0-9]+$/.test(input),
     },
     {
       type: 'input',
