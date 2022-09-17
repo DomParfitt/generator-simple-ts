@@ -8,7 +8,7 @@ module.exports = class extends Generator {
   }
 
   async prompting() {
-    await this._askQuestions(questions(this.config));
+    await this._askQuestions(questions(this.config, { author: this.user.git.name(), email: this.user.git.email() }));
   }
 
   writing() {
@@ -60,8 +60,10 @@ module.exports = class extends Generator {
         'eslint-plugin-prettier',
         'jest',
         'jest-junit',
+        'nodemon',
         'prettier',
         'ts-jest',
+        'ts-node',
         'typescript',
       ],
       { 'save-dev': true },

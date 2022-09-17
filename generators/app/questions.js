@@ -6,7 +6,7 @@ const gitProviders = [
   { name: 'Bitbucket', value: 'https://bitbucket.org' },
 ];
 
-function questions(config) {
+function questions(config, { author, email }) {
   return [
     {
       type: 'input',
@@ -30,13 +30,13 @@ function questions(config) {
       type: 'input',
       name: 'author',
       message: 'Project author',
-      store: true,
+      default: author,
     },
     {
       type: 'input',
       name: 'email',
       message: "Author's email",
-      store: true,
+      default: email,
     },
     {
       type: 'list',
